@@ -29,8 +29,11 @@ func main() {
 		fmt.Println("After noon")
 	}
 
+	// s := 10
+	// s.(type)
+
 	whatAmI := func(i interface{}) {
-		switch t := i.(type) {
+		switch t := i.(type) { // valid only inside switch statement
 		case bool:
 			fmt.Println("I'm a bool")
 		case int:
