@@ -12,6 +12,7 @@ func main() {
 	fmt.Println(freqCounter(s))
 }
 
+// better to use FieldsFunc but i ignored it for some reason :)
 func freqCounter(str string) map[string]int {
 	ret := make(map[string]int)
 
