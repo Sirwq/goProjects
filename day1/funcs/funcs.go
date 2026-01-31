@@ -23,6 +23,8 @@ func main() {
 	wrapped()
 
 	loggerNoWrap("minus", minus(3, 2))
+
+	fmt.Println("fact:", fact(10))
 }
 
 func plus(a int, b int) int {
@@ -70,4 +72,19 @@ func loggerNoWrap(name string, result any) {
 	fmt.Println("start")
 	fmt.Printf("%s: %v\n", name, result)
 	fmt.Println("end")
+}
+
+func fact(n int) int {
+	if n == 0 {
+		return 1
+	}
+	return n * fact(n-1)
+}
+
+func fib(n int) int {
+	if n < 2 {
+		return n
+	}
+
+	return fib(n-1) + fib(n-2)
 }
