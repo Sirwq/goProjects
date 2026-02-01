@@ -1,6 +1,9 @@
 package game
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 type Cell int8
 
@@ -12,19 +15,21 @@ const (
 
 type Board [3][3]Cell
 
-type Player Cell
+type Player struct {
+	Mark Cell
+}
 
 type Game struct {
 	board   Board
 	players [2]Player
-	curturn bool
+	turn    int
 }
 
 func start() *Game {
 	game := new(Game)
-	game.players[0] = X
-	game.players[1] = O
-	game.curturn = false
+	game.players[0].Mark = X
+	game.players[1].Mark = O
+	game.turn = 0
 	return game
 }
 
@@ -50,5 +55,11 @@ func getTurn() (x, y int) {
 }
 
 func (g *Game) MakeTurn(x, y int, mark Cell) error {
-
+	if g.board[x][y] != EmptyCell {
+		return errors.New("В этой точке уже есть фигура.")
+	}
+	g.turn = 1 - g.turn
+	// 1 -> 0 || 0 -> 1 instead of bool that i thougt would work
+	g.board[x][y] = g.players[g.turn].Mark
+	return nil
 }
