@@ -63,3 +63,26 @@ func (g *Game) MakeTurn(x, y int, mark Cell) error {
 	// 1 -> 0 || 0 -> 1 instead of bool that i thougt would work
 	return nil
 }
+
+func (g *Game) CheckWin() Cell {
+	// Diagonal
+	if g.board[0][0] == g.board[1][1] && g.board[1][1] == g.board[2][2] {
+		return g.board[1][1]
+	}
+	// Reverse diagonal
+	if g.board[2][0] == g.board[1][1] && g.board[1][1] == g.board[0][2] {
+		return g.board[1][1]
+	}
+
+	if g.board[0][0] == g.board[0][1] && g.board[0][1] == g.board[0][2] {
+		return g.board[0][0]
+	}
+	if g.board[1][0] == g.board[1][1] && g.board[1][1] == g.board[1][2] {
+		return g.board[1][1]
+	}
+	if g.board[2][0] == g.board[2][1] && g.board[2][1] == g.board[2][2] {
+		return g.board[2][2]
+	}
+
+	return EmptyCell
+}
