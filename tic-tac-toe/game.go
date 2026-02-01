@@ -64,23 +64,30 @@ func (g *Game) MakeTurn(x, y int, mark Cell) error {
 	return nil
 }
 
-func (g *Game) CheckWin() Cell {
+func (g *Game) CheckWin() Cell { // ILL REFACTOR THIS FOR SUUUUUURE but not RN
 	// Diagonal
-	if g.board[0][0] == g.board[1][1] && g.board[1][1] == g.board[2][2] {
+	if g.board[0][0] != EmptyCell &&
+		g.board[0][0] == g.board[1][1] && g.board[1][1] == g.board[2][2] {
 		return g.board[1][1]
 	}
 	// Reverse diagonal
-	if g.board[2][0] == g.board[1][1] && g.board[1][1] == g.board[0][2] {
+	if g.board[2][0] != EmptyCell &&
+		g.board[2][0] == g.board[1][1] && g.board[1][1] == g.board[0][2] {
 		return g.board[1][1]
 	}
 
-	if g.board[0][0] == g.board[0][1] && g.board[0][1] == g.board[0][2] {
+	if g.board[0][0] != EmptyCell &&
+		g.board[0][0] == g.board[0][1] && g.board[0][1] == g.board[0][2] {
 		return g.board[0][0]
 	}
-	if g.board[1][0] == g.board[1][1] && g.board[1][1] == g.board[1][2] {
+
+	if g.board[1][0] != EmptyCell &&
+		g.board[1][0] == g.board[1][1] && g.board[1][1] == g.board[1][2] {
 		return g.board[1][1]
 	}
-	if g.board[2][0] == g.board[2][1] && g.board[2][1] == g.board[2][2] {
+
+	if g.board[2][0] != EmptyCell &&
+		g.board[2][0] == g.board[2][1] && g.board[2][1] == g.board[2][2] {
 		return g.board[2][2]
 	}
 
