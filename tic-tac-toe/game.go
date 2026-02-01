@@ -58,8 +58,8 @@ func (g *Game) MakeTurn(x, y int, mark Cell) error {
 	if g.board[x][y] != EmptyCell {
 		return errors.New("В этой точке уже есть фигура.")
 	}
+	g.board[x][y] = g.players[g.turn].Mark
 	g.turn = 1 - g.turn
 	// 1 -> 0 || 0 -> 1 instead of bool that i thougt would work
-	g.board[x][y] = g.players[g.turn].Mark
 	return nil
 }
