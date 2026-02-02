@@ -54,7 +54,7 @@ func GetTurn() (x, y int) {
 	return
 }
 
-func (g *Game) MakeTurn(x, y int, mark Cell) error {
+func (g *Game) MakeTurn(x, y int) error {
 	if g.Board[x][y] != EmptyCell {
 		return errors.New("В этой точке уже есть фигура.")
 	}
@@ -64,7 +64,7 @@ func (g *Game) MakeTurn(x, y int, mark Cell) error {
 	return nil
 }
 
-func (g *Game) CheckWin() Cell { // ILL REFACTOR THIS FOR SUUUUUURE but not RN
+func (g Game) CheckWin() Cell { // ILL REFACTOR THIS FOR SUUUUUURE but not RN
 	// Diagonal
 	if g.Board[0][0] != EmptyCell &&
 		g.Board[0][0] == g.Board[1][1] && g.Board[1][1] == g.Board[2][2] {
@@ -91,7 +91,31 @@ func (g *Game) CheckWin() Cell { // ILL REFACTOR THIS FOR SUUUUUURE but not RN
 		return g.Board[2][2]
 	}
 
+	if g.Board[0][0] != EmptyCell &&
+		g.Board[0][0] == g.Board[0][1] && g.Board[0][1] == g.Board[0][2] {
+		return g.Board[0][0]
+	}
+	if g.Board[0][1] != EmptyCell &&
+		g.Board[0][1] == g.Board[1][1] && g.Board[1][1] == g.Board[2][1] {
+		return g.Board[1][1]
+	}
+	if g.Board[0][2] != EmptyCell &&
+		g.Board[0][2] == g.Board[1][2] && g.Board[1][2] == g.Board[2][2] {
+		return g.Board[2][2]
+	}
+
 	return EmptyCell
+}
+
+func (g Game) IsOver() bool {
+	for i := range g.Board {
+		for j := range g.Board[0] {
+			if g.Board[i][j] == EmptyCell {
+				return false
+			}
+		}
+	}
+	return true
 }
 
 func (c Cell) String() string {
@@ -111,6 +135,10 @@ func (g Game) String() string {
 	for i := range g.Board {
 		for j := range g.Board[0] {
 			sb.WriteString(g.Board[i][j].String())
+
+			if j < 2 {
+				sb.WriteString("|")
+			}
 		}
 		sb.WriteString("\n")
 	}
