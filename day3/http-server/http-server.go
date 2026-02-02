@@ -8,8 +8,10 @@ import (
 func main() {
 	http.HandleFunc("/hello", hello)
 	http.HandleFunc("/headers", headers)
+	http.HandleFunc("/bye", bye)
 
 	http.ListenAndServe(":8090", nil)
+
 }
 
 func hello(w http.ResponseWriter, req *http.Request) {
@@ -22,4 +24,8 @@ func headers(w http.ResponseWriter, req *http.Request) {
 			fmt.Fprintf(w, "%v: %v\n", name, h)
 		}
 	}
+}
+
+func bye(w http.ResponseWriter, req *http.Request) {
+	fmt.Fprint(w, "bye\n")
 }
