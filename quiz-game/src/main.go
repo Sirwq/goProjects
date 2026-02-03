@@ -77,3 +77,12 @@ func readCsvChanneling(path string) <-chan []string {
 	}()
 	return ch
 }
+
+// add other operations +,-,*,/
+func parseLine(math, answer string) (val1, val2 int) {
+	val1, _ = strconv.Atoi(strings.Split(math, "+")[0])
+	temp, _ := strconv.Atoi(strings.Split(math, "+")[1])
+	val1 += temp
+	val2, _ = strconv.Atoi(answer)
+	return val1, val2
+}
