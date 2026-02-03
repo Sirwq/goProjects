@@ -11,7 +11,11 @@ import (
 
 func main() {
 	path := "problems.csv" // add change path later
-	readCsv(path)
+	//readCsv(path)
+
+	for line := range readCsvChanneling(path) {
+		fmt.Println(line[0], "|||", line[1])
+	}
 
 }
 
@@ -32,7 +36,7 @@ func readCsv(path string) {
 			break
 		}
 		if err != nil {
-			fmt.Printf("Error of type: %s\n", err)
+			fmt.Printf("rrror of type: %s\n", err)
 			break
 		}
 
@@ -46,4 +50,30 @@ func readCsv(path string) {
 		fmt.Printf("VAL1: %d with type %T\n", q, q)
 		fmt.Printf("VAL2: %d with type %T\n", a, a)
 	}
+}
+
+func readCsvChanneling(path string) <-chan []string {
+	ch := make(chan []string)
+
+	go func() {
+		defer close(ch)
+		file, err := os.Open(path)
+		if err != nil {
+			fmt.Printf("can't open file")
+			return
+		}
+		reader := csv.NewReader(file)
+
+		for {
+			line, err := reader.Read()
+			if err == io.EOF {
+				break
+			}
+			if err != nil {
+				fmt.Printf("rrror of type: %s\n", err)
+			}
+			ch <- line
+		}
+	}()
+	return ch
 }
