@@ -12,44 +12,23 @@ import (
 func main() {
 	path := "problems.csv" // add change path later
 	//readCsv(path)
+	qCounter := 0
+	rAnswers := 0
+	var uInput string
 
 	for line := range readCsvChanneling(path) {
-		fmt.Println(line[0], "|||", line[1])
-	}
-
-}
-
-func readCsv(path string) {
-	file, err := os.Open(path)
-
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer file.Close()
-
-	reader := csv.NewReader(file)
-
-	for {
-		line, err := reader.Read()
-
-		if err == io.EOF {
-			break
+		qCounter++
+		//fmt.Println(line[0], "|||", line[1])
+		_, answer := parseLine(line[0], line[1])
+		fmt.Print(line[0], "=")
+		fmt.Scanln(&uInput)
+		fmt.Println()
+		num, _ := strconv.Atoi(uInput)
+		if num == answer {
+			rAnswers++
 		}
-		if err != nil {
-			fmt.Printf("rrror of type: %s\n", err)
-			break
-		}
-
-		fmt.Printf("val1: %s, val2: %s\n", line[0], line[1])
-
-		q, _ := strconv.Atoi(strings.Split(line[0], "+")[0])
-		q1, _ := strconv.Atoi(strings.Split(line[0], "+")[1])
-		q = q + q1
-		a, _ := strconv.Atoi(line[1])
-
-		fmt.Printf("VAL1: %d with type %T\n", q, q)
-		fmt.Printf("VAL2: %d with type %T\n", a, a)
 	}
+	fmt.Printf("You got right %d out of %d questions\n", rAnswers, qCounter)
 }
 
 func readCsvChanneling(path string) <-chan []string {
