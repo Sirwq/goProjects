@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strconv"
+	"strings"
 )
 
 func main() {
@@ -35,5 +37,13 @@ func readCsv(path string) {
 		}
 
 		fmt.Printf("val1: %s, val2: %s\n", line[0], line[1])
+
+		q, _ := strconv.Atoi(strings.Split(line[0], "+")[0])
+		q1, _ := strconv.Atoi(strings.Split(line[0], "+")[1])
+		q = q + q1
+		a, _ := strconv.Atoi(line[1])
+
+		fmt.Printf("VAL1: %d with type %T\n", q, q)
+		fmt.Printf("VAL2: %d with type %T\n", a, a)
 	}
 }
