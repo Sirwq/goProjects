@@ -7,18 +7,27 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"sync/atomic"
+	"time"
 )
 
 func main() {
 	path := "problems.csv" // add change path later
-	//readCsv(path)
 	qCounter := 0
 	rAnswers := 0
 	var uInput string
+	var ops atomic.Uint64
+	start := time.Now()
+
+	go func() {
+		for {
+			time.Sleep(time.Second)
+			ops.Add(1)
+		}
+	}()
 
 	for line := range readCsvChanneling(path) {
 		qCounter++
-		//fmt.Println(line[0], "|||", line[1])
 		_, answer := parseLine(line[0], line[1])
 		fmt.Print(line[0], "=")
 		fmt.Scanln(&uInput)
@@ -29,6 +38,8 @@ func main() {
 		}
 	}
 	fmt.Printf("You got right %d out of %d questions\n", rAnswers, qCounter)
+	fmt.Println("Time passed:", ops.Load())
+	fmt.Println("Time passed easy method:", time.Since(start).Round(time.Millisecond))
 }
 
 func readCsvChanneling(path string) <-chan []string {
@@ -41,6 +52,7 @@ func readCsvChanneling(path string) <-chan []string {
 			fmt.Printf("can't open file")
 			return
 		}
+		defer file.Close()
 		reader := csv.NewReader(file)
 
 		for {
@@ -49,7 +61,7 @@ func readCsvChanneling(path string) <-chan []string {
 				break
 			}
 			if err != nil {
-				fmt.Printf("rrror of type: %s\n", err)
+				fmt.Printf("error of type: %s\n", err)
 			}
 			ch <- line
 		}
