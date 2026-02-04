@@ -2,17 +2,18 @@ package main
 
 import (
 	"encoding/csv"
+	"flag"
 	"fmt"
 	"io"
 	"os"
-	"strconv"
-	"strings"
 	"sync/atomic"
 	"time"
 )
 
 func main() {
-	path := "problems.csv" // add change path later
+	csvFilename := flag.String("csv", "problems.csv", "a csv file in format of 'question,answer'")
+	timeLimit := flag.Int("limit", 30, "the time limit for the quiz in seconds")
+	flag.Parse()
 	qCounter := 0
 	rAnswers := 0
 	var uInput string
@@ -26,20 +27,24 @@ func main() {
 		}
 	}()
 
-	for line := range readCsvChanneling(path) {
+	go func() {
+		<-time.After(time.Duration(*timeLimit) * time.Second)
+		fmt.Printf("\nYou got right %d out of %d questions\n", rAnswers, qCounter)
+		exit("\nTime ended!")
+	}()
+
+	for line := range readCsvChanneling(*csvFilename) {
 		qCounter++
-		_, answer := parseLine(line[0], line[1])
 		fmt.Print(line[0], "=")
 		fmt.Scanln(&uInput)
 		fmt.Println()
-		num, _ := strconv.Atoi(uInput)
-		if num == answer {
+		if uInput == line[1] {
 			rAnswers++
 		}
 	}
 	fmt.Printf("You got right %d out of %d questions\n", rAnswers, qCounter)
-	fmt.Println("Time passed:", ops.Load())
 	fmt.Println("Time passed easy method:", time.Since(start).Round(time.Millisecond))
+	fmt.Println("Time passed:", ops.Load())
 }
 
 func readCsvChanneling(path string) <-chan []string {
@@ -49,8 +54,7 @@ func readCsvChanneling(path string) <-chan []string {
 		defer close(ch)
 		file, err := os.Open(path)
 		if err != nil {
-			fmt.Printf("can't open file")
-			return
+			exit(fmt.Sprintf("error of type: %s\n", err))
 		}
 		defer file.Close()
 		reader := csv.NewReader(file)
@@ -61,7 +65,7 @@ func readCsvChanneling(path string) <-chan []string {
 				break
 			}
 			if err != nil {
-				fmt.Printf("error of type: %s\n", err)
+				exit(fmt.Sprintf("error of type: %s\n", err))
 			}
 			ch <- line
 		}
@@ -69,11 +73,7 @@ func readCsvChanneling(path string) <-chan []string {
 	return ch
 }
 
-// add other operations +,-,*,/
-func parseLine(math, answer string) (val1, val2 int) {
-	val1, _ = strconv.Atoi(strings.Split(math, "+")[0])
-	temp, _ := strconv.Atoi(strings.Split(math, "+")[1])
-	val1 += temp
-	val2, _ = strconv.Atoi(answer)
-	return val1, val2
+func exit(msg string) {
+	fmt.Println(msg)
+	os.Exit(1)
 }
