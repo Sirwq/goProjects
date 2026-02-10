@@ -2,7 +2,6 @@ package game
 
 import (
 	"errors"
-	"fmt"
 	"strings"
 )
 
@@ -31,27 +30,6 @@ func New() *Game {
 		Board:   Board{},
 		Players: [2]Player{Player{X}, Player{O}},
 		turn:    0}
-}
-
-func GetTurn() (x, y int) {
-	for {
-		fmt.Println("Введите координаты, куда хотите поставить вашу фигуру:")
-
-		n, err := fmt.Scan(&x, &y)
-
-		if err != nil || n != 2 {
-			fmt.Println("Введены некоректные данные")
-			fmt.Scanln() // c-like buffer clear
-			continue
-		}
-
-		if x < 0 || x > 2 || y < 0 || y > 2 {
-			fmt.Println("Координаты должны соответствовать сетке")
-			continue
-		}
-		break
-	}
-	return
 }
 
 func (g *Game) MakeTurn(x, y int) error {

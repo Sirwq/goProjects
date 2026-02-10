@@ -15,7 +15,7 @@ func (m *Manager) CreateGame(name string) error {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	if _, exists := m.games[name]; exists {
-		return errors.New("room already exists")
+		return errors.New("Room already exists")
 	}
 	m.games[name] = game.New()
 	return nil
@@ -27,11 +27,22 @@ func (m *Manager) GetGame(name string) (*game.Game, error) {
 	if _, exists := m.games[name]; exists {
 		return m.games[name], nil
 	}
-	return nil, errors.New("couldn't create game")
+	return nil, errors.New("Room not found")
 }
 
 func New() *Manager {
 	return &Manager{
-		games: New().games,
+		games: make(map[string]*game.Game),
 	}
+}
+
+func (m *Manager) DeleteGame(name string) error {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+
+	if _, exists := m.games[name]; exists {
+		delete(m.games, name)
+		return nil
+	}
+	return errors.New("No game found")
 }
