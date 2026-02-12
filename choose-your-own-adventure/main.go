@@ -6,6 +6,8 @@ import (
 	"io"
 	"log"
 	"os"
+
+	"github.com/manifoldco/promptui"
 )
 
 type Page struct {
@@ -20,7 +22,32 @@ type Options struct {
 }
 
 func main() {
-	getJson("gopher.json")
+	p := getJson("gopher.json")
+
+	// for name, _ := range p {
+	// 	fmt.Println(name)
+	// }
+
+	page, ok := p["intro"]
+	if !ok {
+		fmt.Println("error")
+		return
+	}
+
+	for {
+		x := readStory(page)
+
+		if x == "home" {
+			return
+		}
+
+		page, ok = p[x]
+		if !ok {
+			fmt.Println("error")
+			return
+		}
+	}
+
 }
 
 func getJson(filePath string) map[string]Page {
@@ -47,6 +74,22 @@ func readStruct(p map[string]Page) {
 		}
 		fmt.Println()
 	}
+}
+
+func readStory(p Page) string {
+
+	for i := range p.Story {
+		fmt.Println(p.Story[i])
+	}
+
+	prompt := promptui.Select{
+		Label: "Choose your option",
+		Items: p.Options,
+	}
+	i, _, err := prompt.Run()
+
+	check(err, "Prompt failed %v\n")
+	return p.Options[i].Arc
 }
 
 func check(err error, msg string) {
