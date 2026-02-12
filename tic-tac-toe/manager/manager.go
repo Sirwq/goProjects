@@ -11,6 +11,12 @@ type Manager struct {
 	games map[string]*game.Game
 }
 
+func New() *Manager {
+	return &Manager{
+		games: make(map[string]*game.Game),
+	}
+}
+
 func (m *Manager) CreateGame(name string) error {
 	m.mu.Lock()
 	defer m.mu.Unlock()
@@ -28,12 +34,6 @@ func (m *Manager) GetGame(name string) (*game.Game, error) {
 		return m.games[name], nil
 	}
 	return nil, errors.New("Room not found")
-}
-
-func New() *Manager {
-	return &Manager{
-		games: make(map[string]*game.Game),
-	}
 }
 
 func (m *Manager) DeleteGame(name string) error {

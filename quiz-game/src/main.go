@@ -29,7 +29,6 @@ func main() {
 
 	go func() {
 		<-time.After(time.Duration(*timeLimit) * time.Second)
-		fmt.Printf("\nYou got right %d out of %d questions\n", rAnswers, qCounter)
 		exit("\nTime ended!")
 	}()
 
