@@ -30,9 +30,9 @@ func StoryHandler(pages map[string]Page, fallback http.Handler) http.HandlerFunc
 func main() {
 	pages := getJson("gopher.json")
 
-	for i, p := range pages {
-		fmt.Println(i, p.Title)
-	}
+	// for i, p := range pages {
+	// 	fmt.Println(i, p.Title)
+	// }
 
 	http.ListenAndServe(":8181", StoryHandler(pages, http.DefaultServeMux))
 }
