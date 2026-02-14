@@ -7,7 +7,15 @@
 
     <body>
         <h1>{{ .Title}}</h1>
-        <p>{{ .Message}}</p>
+        <p>{{ .Story}}</p>
+
+        <div class="opt">
+            <ul>
+                {{range .Options}}
+                    <li>{{ . }}</li>
+                {{end}}
+            </ul>
+        </div>
 
     </body>
 </html>
