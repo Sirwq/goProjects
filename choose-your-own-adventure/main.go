@@ -23,11 +23,6 @@ type Options struct {
 
 func main() {
 	p := getJson("gopher.json")
-
-	// for name, _ := range p {
-	// 	fmt.Println(name)
-	// }
-
 	page, ok := p["intro"]
 	if !ok {
 		fmt.Println("error")
@@ -85,6 +80,11 @@ func readStory(p Page) string {
 	prompt := promptui.Select{
 		Label: "Choose your option",
 		Items: p.Options,
+		Templates: &promptui.SelectTemplates{
+			Active:   "-> {{ .Text}}",
+			Inactive: "   {{ .Text}}",
+			Selected: "   {{ .Text}}",
+		},
 	}
 	i, _, err := prompt.Run()
 
