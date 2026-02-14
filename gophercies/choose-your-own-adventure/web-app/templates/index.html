@@ -1,21 +1,19 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" href="static/styles.css">
         <meta charset="UTF-8">
         <title>{{ .Title}}</title>
     </head>
 
-    <body>
-        <h1>{{ .Title}}</h1>
-        <p>{{ .Story}}</p>
-
-        <div class="opt">
-            <ul>
-                {{range .Options}}
-                    <li>{{ . }}</li>
-                {{end}}
-            </ul>
-        </div>
-
+    <div class="frame">
+        <h1>{{ .Title }}</h1>
+        {{range .Story}}
+            <p>{{ . }}</p>
+        {{end}}
+        {{range .Options}}
+            <a href="/{{ .Arc}}">{{ .Text }}</a>
+        {{end}}
+        <div class="piece scanlines noclick"></div>
     </body>
 </html>

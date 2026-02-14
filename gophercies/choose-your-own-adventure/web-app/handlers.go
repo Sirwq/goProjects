@@ -8,16 +8,20 @@ import (
 
 type ViewData struct {
 	Title   string
-	Story   string
-	Options []string
+	Story   []string
+	Options []Options
 }
 
 func viewHandle(path string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		data := ViewData{
-			Title:   "Some basic title",
-			Story:   "There's a message from tempalte",
-			Options: []string{"Option 1", "Option 2"},
+			Title: "Some basic title",
+			Story: []string{
+				"pretty long string",
+				"pretty long string",
+				"s",
+			},
+			Options: []Options{},
 		}
 		tmpl, err := template.ParseFiles("templates/index.html")
 		check(err, "parsing template")
