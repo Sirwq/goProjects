@@ -1,28 +1,13 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
 	"net/http"
 )
 
-type ViewData struct {
-	Title   string
-	Story   []string
-	Options []Options
-}
-
-func viewHandle(path string) http.HandlerFunc {
+func viewHandle(page Page) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		data := ViewData{
-			Title: "Some basic title",
-			Story: []string{
-				"pretty long string",
-				"pretty long string",
-				"s",
-			},
-			Options: []Options{},
-		}
+		data := page
 		tmpl, err := template.ParseFiles("templates/index.html")
 		check(err, "parsing template")
 		err = tmpl.Execute(w, data)
@@ -39,7 +24,7 @@ func StoryHandler(pages map[string]Page, fallback http.Handler) http.HandlerFunc
 		}
 
 		if page, ok := pages[arc]; ok {
-			fmt.Fprint(w, page.Title)
+			viewHandle(page)(w, r)
 			return
 		}
 		fallback.ServeHTTP(w, r)

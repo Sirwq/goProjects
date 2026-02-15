@@ -7,6 +7,6 @@ import (
 
 func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
-	http.HandleFunc("/", viewHandle("abc"))
-	log.Fatal(http.ListenAndServe(":8181", nil))
+	pages := getJson("gopher.json")
+	log.Fatal(http.ListenAndServe(":8182", StoryHandler(pages, http.DefaultServeMux)))
 }

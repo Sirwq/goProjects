@@ -6,14 +6,15 @@
         <title>{{ .Title}}</title>
     </head>
 
-    <div class="frame">
-        <h1>{{ .Title }}</h1>
-        {{range .Story}}
-            <p>{{ . }}</p>
-        {{end}}
-        {{range .Options}}
-            <a href="/{{ .Arc}}">{{ .Text }}</a>
-        {{end}}
-        <div class="piece scanlines noclick"></div>
+    <body>
+        <div class="frame">
+            <h1>{{ .Title }}</h1>
+            {{range .Story}}
+                <p>{{ . }}</p>
+            {{end}}
+            {{range .Options}}
+                <a href="/{{ .Arc}}">{{ .Text }}</a>
+            {{end}}
+        </div>
     </body>
 </html>
