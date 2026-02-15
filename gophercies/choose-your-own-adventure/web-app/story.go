@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
 	"os"
@@ -32,16 +31,6 @@ func getJson(filePath string) map[string]Page {
 	json.Unmarshal(byteValue, &p)
 
 	return p
-}
-
-func readStruct(p map[string]Page) {
-	for i := range p {
-		fmt.Println(p[i].Title)
-		for j, opt := range p[i].Options {
-			fmt.Println(j+1, opt.Text)
-		}
-		fmt.Println()
-	}
 }
 
 func check(err error, msg string) {

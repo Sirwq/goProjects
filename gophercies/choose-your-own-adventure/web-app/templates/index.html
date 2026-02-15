@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="static/styles.css">
+        <link rel="stylesheet" href="/static/styles.css">
         <meta charset="UTF-8">
         <title>{{ .Title}}</title>
     </head>
@@ -12,9 +12,11 @@
             {{range .Story}}
                 <p>{{ . }}</p>
             {{end}}
+            <div class="options">
             {{range .Options}}
                 <a href="/{{ .Arc}}">{{ .Text }}</a>
             {{end}}
+            </div>
         </div>
     </body>
 </html>

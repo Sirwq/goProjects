@@ -6,10 +6,11 @@ import (
 )
 
 func viewHandle(page Page) http.HandlerFunc {
+	tmpl, err := template.ParseFiles("templates/index.html")
+	check(err, "parsing template")
+
 	return func(w http.ResponseWriter, r *http.Request) {
 		data := page
-		tmpl, err := template.ParseFiles("templates/index.html")
-		check(err, "parsing template")
 		err = tmpl.Execute(w, data)
 		check(err, "executing template")
 	}
