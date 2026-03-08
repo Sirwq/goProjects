@@ -1,0 +1,4 @@
+token.json
+.env
+.DS_Store
+coverage.out
